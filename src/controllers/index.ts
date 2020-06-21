@@ -5,3 +5,5 @@ export * from './pallet.controller';
 export * from './stock.controller';
 export * from './stock-product.controller';
 export * from './stock-pallet.controller';
+export * from './pallet-stock.controller';
+export * from './pallet-pallet-type.controller';

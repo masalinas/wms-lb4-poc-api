@@ -1,6 +1,6 @@
-import {Entity, model, property, belongsTo} from '@loopback/repository';
+import {Entity, model, property, belongsTo, hasMany} from '@loopback/repository';
 
-import {Stock} from './stock.model';
+import {Stock, StockWithRelations} from './stock.model';
 import {PalletType} from './pallet-type.model';
 
 @model({
@@ -21,11 +21,11 @@ export class Pallet extends Entity {
   })
   sscc: string;
 
+  @hasMany(() => Stock)
+  stocks: Stock[];
+
   @belongsTo(() => PalletType)
   palletTypeId: string;
-
-  @property.array(Stock)
-  stocks?: Stock[];
 
   constructor(data?: Partial<Pallet>) {
     super(data);
