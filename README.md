@@ -46,5 +46,8 @@ Get all pallet with stock products collection and pallet pallet type relation
   ]
 }
 
-# generate angular 2 services from Open API swagger.json file
-java -jar swagger-codegen-cli-3.0.20.jar generate -i swagger.json -l typescript-angular
+# install openapi-generator-cli
+npm install @openapitools/openapi-generator-cli -g
+
+# generate angular 2 services from openapi-generator-cli
+openapi-generator generate -i swagger.json -g typescript-angular
