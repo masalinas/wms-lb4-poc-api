@@ -51,3 +51,11 @@ npm install @openapitools/openapi-generator-cli -g
 
 # generate angular 2 services from openapi-generator-cli
 openapi-generator generate -i swagger.json -g typescript-angular
+
+# install openapi-to-graphql
+npm install openapi-to-graphql -g
+npm i openapi-to-graphql-cli --save
+
+# start graphQL server
+openapi-to-graphql --port=3001 http://localhost:3000/openapi.json
+npx openapi-to-graphql --port=3001 http://localhost:3000/openapi.json
