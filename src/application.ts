@@ -7,6 +7,14 @@ import {ServiceMixin} from '@loopback/service-proxy';
 import path from 'path';
 import {MySequence} from './sequence';
 
+import {AuthenticationComponent} from '@loopback/authentication';
+import {
+  JWTAuthenticationComponent,
+  SECURITY_SCHEME_SPEC,
+  UserServiceBindings,
+} from '@loopback/authentication-jwt';
+import {WmsPocDataSource} from './datasources';
+
 export {ApplicationConfig};
 
 export class WmsPocApiApplication extends BootMixin(
@@ -37,5 +45,11 @@ export class WmsPocApiApplication extends BootMixin(
         nested: true,
       },
     };
+
+    this.component(AuthenticationComponent);
+    // Mount jwt component
+    this.component(JWTAuthenticationComponent);
+    // Bind datasource
+    this.dataSource(WmsPocDataSource, UserServiceBindings.DATASOURCE_NAME);
   }
 }

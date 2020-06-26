@@ -1,17 +1,11 @@
-import {
-  repository,
-} from '@loopback/repository';
-import {
-  param,
-  get,
-  getModelSchemaRef,
-} from '@loopback/rest';
-import {
-  Stock,
-  Product,
-} from '../models';
+import {repository} from '@loopback/repository';
+import {param, get, getModelSchemaRef} from '@loopback/rest';
+import {authenticate} from '@loopback/authentication';
+
+import {Stock, Product} from '../models';
 import {StockRepository} from '../repositories';
 
+@authenticate('jwt')
 export class StockProductController {
   constructor(
     @repository(StockRepository)

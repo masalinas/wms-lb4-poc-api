@@ -1,24 +1,11 @@
-import {
-  Count,
-  CountSchema,
-  Filter,
-  FilterExcludingWhere,
-  repository,
-  Where,
-} from '@loopback/repository';
-import {
-  post,
-  param,
-  get,
-  getModelSchemaRef,
-  patch,
-  put,
-  del,
-  requestBody,
-} from '@loopback/rest';
+import {Count, CountSchema, Filter, FilterExcludingWhere, repository, Where} from '@loopback/repository';
+import {post, param, get, getModelSchemaRef, patch, put, del, requestBody} from '@loopback/rest';
+import {authenticate} from '@loopback/authentication';
+
 import {Pallet} from '../models';
 import {PalletRepository} from '../repositories';
 
+@authenticate('jwt')
 export class PalletController {
   constructor(
     @repository(PalletRepository)

@@ -7,3 +7,4 @@ export * from './stock-product.controller';
 export * from './stock-pallet.controller';
 export * from './pallet-stock.controller';
 export * from './pallet-pallet-type.controller';
+export * from './user.controller';

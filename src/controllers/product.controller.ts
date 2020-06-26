@@ -1,24 +1,11 @@
-import {
-  Count,
-  CountSchema,
-  Filter,
-  FilterExcludingWhere,
-  repository,
-  Where,
-} from '@loopback/repository';
-import {
-  post,
-  param,
-  get,
-  getModelSchemaRef,
-  patch,
-  put,
-  del,
-  requestBody,
-} from '@loopback/rest';
+import {Count, CountSchema, Filter, FilterExcludingWhere, repository, Where} from '@loopback/repository';
+import {post, param, get, getModelSchemaRef, patch, put, del, requestBody} from '@loopback/rest';
+import {authenticate} from '@loopback/authentication';
+
 import {Product} from '../models';
 import {ProductRepository} from '../repositories';
 
+@authenticate('jwt')
 export class ProductController {
   constructor(
     @repository(ProductRepository)

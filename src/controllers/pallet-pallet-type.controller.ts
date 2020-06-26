@@ -1,17 +1,11 @@
-import {
-  repository,
-} from '@loopback/repository';
-import {
-  param,
-  get,
-  getModelSchemaRef,
-} from '@loopback/rest';
-import {
-  Pallet,
-  PalletType,
-} from '../models';
+import {repository} from '@loopback/repository';
+import {param, get, getModelSchemaRef} from '@loopback/rest';
+import {authenticate} from '@loopback/authentication';
+
+import {Pallet, PalletType} from '../models';
 import {PalletRepository} from '../repositories';
 
+@authenticate('jwt')
 export class PalletPalletTypeController {
   constructor(
     @repository(PalletRepository)
