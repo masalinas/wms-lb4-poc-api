@@ -3,12 +3,13 @@ import {del, get, getModelSchemaRef, getWhereSchemaFor, param, patch, post, requ
 import {authenticate} from '@loopback/authentication';
 
 import {Pallet, Stock, Product} from '../models';
-import {PalletRepository} from '../repositories';
+import {PalletRepository, StockRepository} from '../repositories';
 
 @authenticate('jwt')
 export class PalletStockController {
   constructor(
     @repository(PalletRepository) protected palletRepository: PalletRepository,
+    @repository(StockRepository) protected stockRepository: StockRepository,
   ) { }
 
   @get('/pallets/{id}/stocks', {
@@ -112,17 +113,17 @@ export class PalletStockController {
           }),
         },
       },
-    }) stockLine: Omit<Stock, 'id'>,
+    }) stockLine: Partial<Stock>,
   ): Promise<Stock> {
-    // get stock pallet from logistic variables
-    let filter: any = {filter: JSON.stringify({where: {productId: stockLine.productId,
-                                                       lot: stockLine.lot,
-                                                       expeditionDate: stockLine.expeditionDate,
-                                                       serialNumber: stockLine.serialNumber}})};
+    // STEP01: get stock from logistic variables
+    let filter: any = {where: {productId: stockLine.productId,
+                               lot: stockLine.lot,
+                               expeditionDate: stockLine.expeditionDate,
+                               serialNumber: stockLine.serialNumber}};
 
     let stocks: Stock[] = await this.find(id, filter);
 
-    // add stock
+    // STEP02: add stock
     let stock: any;
 
     if (stocks.length == 0) {
@@ -136,11 +137,12 @@ export class PalletStockController {
     }
     else {
       stock = stocks[0];
+      stock.quantity = stock.quantity + stockLine.quantity;
 
-      let quantity = stock.quantity + stockLine.quantity;
-      let filter: any = {where: JSON.stringify({id: stock.id})};
+      let where: any = {quantity: stock.quantity};
+      let filter: any = {id: stock.id};
 
-      let count: Count = await this.patch(id, {quantity: quantity}, filter);
+      let count: Count = await this.patch(id, where, filter);
 
       return stock;
     }
@@ -167,28 +169,29 @@ export class PalletStockController {
       },
     }) stockLine: Omit<Stock, 'id'>,
   ): Promise<Stock> {
-    // get stock pallet from logistic variables
-    let filter: any = {filter: JSON.stringify({where: {productId: stockLine.productId,
-                                                       lot: stockLine.lot,
-                                                       expeditionDate: stockLine.expeditionDate,
-                                                       serialNumber: stockLine.serialNumber}})};
+    // STEP01: get stock from logistic variables
+    let filter: any = {where: {productId: stockLine.productId,
+                               lot: stockLine.lot,
+                               expeditionDate: stockLine.expeditionDate,
+                               serialNumber: stockLine.serialNumber}};
 
     let stocks: Stock[] = await this.find(id, filter);
 
-    // add stock
+    // STEP02: remove stock
     let stock: Stock = stocks[0];
 
     if (stock.quantity == stockLine.quantity) {
-      let count: Count = await this.delete(stock.id);
+      let count: any = await this.stockRepository.deleteById(stock.id);
 
       return stock;
     }
     else {
       stock.quantity = stock.quantity - stockLine.quantity;
 
-      let quantity = stock.quantity - stockLine.quantity;
-      let filter: any = {where: JSON.stringify({id: stock.id})};
-      let count: Count = await this.patch(id, stock, filter);
+      let where: any = {quantity: stock.quantity};
+      let filter: any = {id: stock.id};
+
+      let count: Count = await this.patch(id, where, filter);
 
       return stock;
     }
