@@ -6,11 +6,9 @@ import {inject} from '@loopback/core';
 export class ProductRepository extends DefaultCrudRepository<
   Product,
   typeof Product.prototype.id,
-  ProductRelations
-> {
+  ProductRelations> {
   constructor(
-    @inject('datasources.wms-poc') dataSource: WmsPocDataSource,
-  ) {
+    @inject('datasources.wms-poc') dataSource: WmsPocDataSource) {
     super(Product, dataSource);
   }
 }
