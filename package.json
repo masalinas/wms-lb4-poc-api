@@ -47,7 +47,7 @@
   ],
   "dependencies": {
     "@loopback/authentication": "^4.2.8",
-    "@loopback/authentication-jwt": "^0.4.2",
+    "@loopback/authentication-jwt": "^0.12.7",
     "@loopback/boot": "^2.3.4",
     "@loopback/core": "^2.9.0",
     "@loopback/openapi-v3": "^3.4.4",
